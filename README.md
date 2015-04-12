@@ -14,4 +14,6 @@ Simply run "make" to compile; "make unittest" to perform a unittest.
 libInput requires the followings:
 
 - OCaml (>= 4.02.1)
+- OCaml Batteries (http://batteries.forge.ocamlcore.org/)
+- Yojson (http://mjambon.com/yojson.html)
 - OUnit (optional for unittesting)
