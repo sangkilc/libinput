@@ -22,7 +22,17 @@ unittest:
 	ocamlbuild -no-links -I unittest unittest/test_input.native
 	@_build/unittest/test_input.native
 
+install: lib
+	ocamlfind install libinput META \
+		_build/libinput.cmi \
+		_build/libinput_type.cmi \
+		_build/libinput_value.cmi \
+		_build/libinput.a \
+		_build/*.mli \
+		_build/libinput.cmxa \
+		_build/libinput.cma
+
 clean:
 	ocamlbuild -clean
 
-.PHONY: all lib unittest clean
+.PHONY: all lib unittest install clean

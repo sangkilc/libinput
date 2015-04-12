@@ -1,0 +1,6 @@
+name = "libinput"
+version = "0.1"
+description = "libInput"
+requires = "str,batteries,yojson"
+archive(byte) = "libinput.cma"
+archive(native) = "libinput.cmxa"
