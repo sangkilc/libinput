@@ -23,6 +23,7 @@ unittest:
 	@_build/unittest/test_input.native
 
 install: lib
+	@ocamlfind remove libinput
 	ocamlfind install libinput META \
 		_build/libinput.cmi \
 		_build/libinput_type.cmi \
