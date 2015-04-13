@@ -97,7 +97,7 @@ let get_char_value value pos =
   Array.get value pos |> strip_byte
 
 (** Value folding *)
-let value_fold = BatArray.fold_righti
+let value_fold = BatArray.fold_lefti
 
 let convert_byte convert value pos =
   let acc = Array.copy value in

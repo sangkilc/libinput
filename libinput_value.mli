@@ -69,7 +69,7 @@ val byte_kind_string : value -> string
 val get_char_value : value -> int -> char
 
 (** Fold on each byte of a value *)
-val value_fold : (int -> 'a -> 'b -> 'b) -> 'a array -> 'b -> 'b
+val value_fold : ('a -> int -> 'b -> 'a) -> 'a -> 'b array -> 'a
 
 val make_abstract : ?makeall:bool -> value -> int -> value
 val make_concrete : value -> int -> value
