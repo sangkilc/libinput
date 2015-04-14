@@ -109,6 +109,9 @@ let vector_to_json enc vector : json =
   `Assoc obj
 
 let to_json_string enc vector =
+  vector_to_json enc vector |> to_string ~std:true
+
+let to_pretty_json enc vector =
   vector_to_json enc vector |> pretty_to_string ~std:true
 
 let unwrap_json_array = function
