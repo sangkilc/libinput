@@ -157,6 +157,9 @@ let json_args base64 lst =
       | arg::typ::[] ->
           unwrap_json_value base64 arg,
           string_to_arg_attrib (unwrap_json_string typ)
+      | arg::[] ->
+          unwrap_json_value base64 arg,
+          Argument.default_attrib
       | _ -> failwith "invalid arguments"
     ) lst
 
