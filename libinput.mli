@@ -55,11 +55,11 @@ val vector_to_string : input_vector -> bool -> string
  *)
 val output_vector : input_vector -> bool -> out_channel -> unit
 
-(** [to_json_string v] returns a json string from an input vector. *)
-val to_json_string : ?encoding:bool -> input_vector -> string
+(** [to_json v] returns a json string from an input vector. *)
+val to_json : ?encoding:bool -> input_vector -> string
 
-(** [of_json_string s] returns an input vecdtor from a json string. *)
-val of_json_string : string -> input_vector
+(** [of_json s] returns an input vecdtor from a json string. *)
+val of_json : string -> input_vector
 
 (** Explicitly set the program target *)
 val set_binary_target : args_t -> string -> args_t

@@ -108,7 +108,7 @@ let vector_to_json enc vector : json =
   in
   `Assoc obj
 
-let to_json_string enc vector =
+let to_json enc vector =
   vector_to_json enc vector |> to_string ~std:true
 
 let to_pretty_json enc vector =
@@ -181,7 +181,7 @@ let json_socket base64 lst =
   if lst = [] then []
   else json_string_tuple_list_to_ocaml base64 lst
 
-let of_json_string str =
+let of_json str =
   let json = from_string str in
   let tbl = unwrap_json_object json in
   let base64 = List.mem ("encoding", `String "base64") tbl in

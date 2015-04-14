@@ -97,7 +97,7 @@ let empty_vector_test test_ctxt =
   assert_equal "" (vector_to_string v false)
 
 let basic_test test_ctxt =
-  let v1 = of_json_string json0 in
+  let v1 = of_json json0 in
   let v2 =
     create_vector
       [(("/bin/cat", None), ArgReg); (("F0F0F0F0", None), ArgReg)]
@@ -106,9 +106,9 @@ let basic_test test_ctxt =
       [("ENV1", ("ZZZZ", None)); ("ENV2", ("YYYY", None))]
       []
   in
-  let v3 = of_json_string json1 in
-  let v4 = of_json_string json3 in
-  let v5 = of_json_string json4 in
+  let v3 = of_json json1 in
+  let v4 = of_json json3 in
+  let v5 = of_json json4 in
   assert_equal (find_arg 0 v1 |> Argument.get_name) 0;
   assert_equal (find_arg 1 v2 |> Argument.get_name) 1;
   assert_equal (find_stdin v2 |> Stdin.get_length) 10;
@@ -134,12 +134,12 @@ let basic_test test_ctxt =
   assert_equal (vector_to_string v1 false) (vector_to_string v2 false)
 
 let cmd_test test_ctxt =
-  let v = of_json_string json1 in
+  let v = of_json json1 in
   List.iter2 assert_equal (get_commandline v) ["/bin/cat"; "F0F0F0F0"];
   assert_equal ("/bin/cat F0F0F0F0 < stdin") (get_commandline_str v)
 
 let attrib_test test_ctxt =
-  let v = of_json_string json2 in
+  let v = of_json json2 in
   let f = FileMap.find "file" v.files in
   let a0 = ArgMap.find 0 v.args in
   let a1 = ArgMap.find 1 v.args in

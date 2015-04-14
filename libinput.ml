@@ -87,12 +87,12 @@ let output_vector vector tohex chan =
   else output_string chan (buf^"\n")
 
 (** Convert an input vector into a json string *)
-let to_json_string ?(encoding=true) iv =
-  Libinput_json.to_json_string encoding iv
+let to_json ?(encoding=true) iv =
+  Libinput_json.to_json encoding iv
 
 (** Read from a json object *)
-let of_json_string str =
-  let args, files, stdin, envs, sockets = Libinput_json.of_json_string str in
+let of_json str =
+  let args, files, stdin, envs, sockets = Libinput_json.of_json str in
   create_vector args files stdin envs sockets
 
 (** Explicitly set the binary target *)
