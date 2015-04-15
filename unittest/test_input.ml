@@ -34,8 +34,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 *)
 
 open OUnit2
-open Libinput_type
 open Libinput
+open Libinput.T
 
 let json0 =
 "{
@@ -99,7 +99,7 @@ let empty_vector_test test_ctxt =
 let basic_test test_ctxt =
   let v1 = of_json json0 in
   let v2 =
-    create_vector
+    Libinput_json.create_vector
       [(("/bin/cat", None), ArgReg); (("F0F0F0F0", None), ArgReg)]
       []
       (Some ("AAAAAAAAAA", Some "1111100000"))

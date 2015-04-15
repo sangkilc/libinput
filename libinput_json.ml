@@ -181,6 +181,34 @@ let json_socket base64 lst =
   if lst = [] then []
   else json_string_tuple_list_to_ocaml base64 lst
 
+(** Create a vector from scratch *)
+let create_vector args files stdin envs sockets =
+  let vector = empty_vector in
+  let folder add create default acc (name, valstr) =
+    let v = valuestr_to_value valstr in
+    let i = create name default v in
+    add name i acc
+  in
+  let argfold = folder ArgMap.add Argument.create in
+  let args =
+    List.fold_left (fun acc (valuestr, (attrib: arg_attrib)) ->
+      let idx = ArgMap.cardinal acc in
+      argfold attrib acc (idx, valuestr)
+    ) vector.args args
+  in
+  let filefold = folder FileMap.add File.create File.default_attrib in
+  let files = List.fold_left filefold vector.files files in
+  let stdinfold = folder StdinMap.add Stdin.create Stdin.default_attrib in
+  let stdin = match stdin with
+    | Some (s, k) -> stdinfold vector.stdin (true, (s, k))
+    | None -> vector.stdin
+  in
+  let envfold = folder EnvMap.add Env.create Env.default_attrib in
+  let envs = List.fold_left envfold vector.envs envs in
+  let sockfold = folder SocketMap.add Socket.create Socket.default_attrib in
+  let sockets = List.fold_left sockfold vector.sockets sockets in
+  {args=args; files=files; stdin=stdin; envs=envs; sockets=sockets}
+
 let of_json str =
   let json = from_string str in
   let tbl = unwrap_json_object json in
@@ -208,5 +236,6 @@ let of_json str =
       Printf.eprintf "(%s, %s)\n" form (to_string json);
       failwith "invalid json format"
   in
-  parse_loop [] [] None [] [] tbl
+  let args, files, stdin, envs, sockets = parse_loop [] [] None [] [] tbl in
+  create_vector args files stdin envs sockets
 

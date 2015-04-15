@@ -13,6 +13,9 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                        #
 ###############################################################################
 
+DOCDIR=libinput.docdir
+APIDIR=docs/api
+
 all: lib
 
 lib:
@@ -33,7 +36,12 @@ install: lib
 		_build/libinput.cmxa \
 		_build/libinput.cma
 
+doc: lib
+	rm -rf $(DOCDIR) $(APIDIR)
+	ocamlbuild -no-links $(DOCDIR)/index.html
+	mv _build/libinput.docdir $(APIDIR)
+
 clean:
 	ocamlbuild -clean
 
-.PHONY: all lib unittest install clean
+.PHONY: all lib unittest install doc clean

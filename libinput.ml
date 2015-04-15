@@ -33,41 +33,16 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 *)
 
-open Libinput_type
-open Libinput_value
+module V = Libinput_value
+module T = Libinput_type
+
+open V
+open T
 
 let acc_str str acc =
   if String.length str = 0 then acc
   else if String.length acc = 0 then str
   else (acc ^"\n"^ str)
-
-(** Create a vector from scratch *)
-let create_vector args files stdin envs sockets =
-  let vector = empty_vector in
-  let folder add create default acc (name, valstr) =
-    let v = valuestr_to_value valstr in
-    let i = create name default v in
-    add name i acc
-  in
-  let argfold = folder ArgMap.add Argument.create in
-  let args =
-    List.fold_left (fun acc (valuestr, (attrib: arg_attrib)) ->
-      let idx = ArgMap.cardinal acc in
-      argfold attrib acc (idx, valuestr)
-    ) vector.args args
-  in
-  let filefold = folder FileMap.add File.create File.default_attrib in
-  let files = List.fold_left filefold vector.files files in
-  let stdinfold = folder StdinMap.add Stdin.create Stdin.default_attrib in
-  let stdin = match stdin with
-    | Some (s, k) -> stdinfold vector.stdin (true, (s, k))
-    | None -> vector.stdin
-  in
-  let envfold = folder EnvMap.add Env.create Env.default_attrib in
-  let envs = List.fold_left envfold vector.envs envs in
-  let sockfold = folder SocketMap.add Socket.create Socket.default_attrib in
-  let sockets = List.fold_left sockfold vector.sockets sockets in
-  {args=args; files=files; stdin=stdin; envs=envs; sockets=sockets}
 
 (** Input vector to string *)
 let vector_to_string vector tohex =
@@ -87,13 +62,10 @@ let output_vector vector tohex chan =
   else output_string chan (buf^"\n")
 
 (** Convert an input vector into a json string *)
-let to_json ?(encoding=true) iv =
-  Libinput_json.to_json encoding iv
+let to_json ?(encoding=true) iv = Libinput_json.to_json encoding iv
 
 (** Read from a json object *)
-let of_json str =
-  let args, files, stdin, envs, sockets = Libinput_json.of_json str in
-  create_vector args files stdin envs sockets
+let of_json = Libinput_json.of_json
 
 (** Explicitly set the binary target *)
 let set_binary_target (args: args_t) target =
